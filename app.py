@@ -3,6 +3,7 @@ import io
 import os
 import socket
 import smtplib
+import threading
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -136,7 +137,7 @@ def submit():
     phone = request.form.get('phone', '').strip()
     if not name or not phone:
         return redirect(url_for('form'))
-    send_email(name, phone)
+    threading.Thread(target=send_email, args=(name, phone), daemon=True).start()
     return redirect(url_for('success'))
 
 

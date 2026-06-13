@@ -44,7 +44,7 @@
           <p class="field-error" id="phone-error">Por favor, informe um telefone válido.</p>
         </div>
 
-        <button type="submit" class="btn-submit">Enviar</button>
+        <button type="submit" class="btn-submit" id="submitBtn">Enviar</button>
       </form>
     </div>
   </div>
@@ -56,16 +56,13 @@
 
     phoneInput.addEventListener('input', function () {
       let v = this.value.replace(/\D/g, '').slice(0, 11);
-      if (v.length === 0) {
-        this.value = '';
-        return;
-      }
+      if (v.length === 0) { this.value = ''; return; }
       let formatted = '';
       if (v.length <= 2) {
         formatted = '(' + v;
       } else if (v.length <= 7) {
         formatted = '(' + v.slice(0, 2) + ') ' + v.slice(2);
-      } else if (v.length <= 11) {
+      } else {
         formatted = '(' + v.slice(0, 2) + ') ' + v.slice(2, 7) + '-' + v.slice(7);
       }
       this.value = formatted;
@@ -97,7 +94,12 @@
         phoneError.style.display = 'none';
       }
 
-      if (!valid) e.preventDefault();
+      if (!valid) { e.preventDefault(); return; }
+
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+      btn.style.opacity = '0.7';
     });
   </script>
 </body>

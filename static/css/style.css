@@ -1,0 +1,235 @@
+:root {
+  --navy: #1B2B5E;
+  --navy-light: #2a3f80;
+  --green: #1A5C1A;
+  --green-light: #217a21;
+  --cream: #FDF8F0;
+  --cream-dark: #F0E8D8;
+  --white: #FFFFFF;
+  --text: #2c2c2c;
+  --gray: #888;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--navy);
+  color: var(--white);
+  padding: 18px 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+header h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+header p {
+  font-size: 0.82rem;
+  opacity: 0.75;
+  margin-top: 4px;
+}
+
+/* ── MAIN CONTAINER ── */
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--white);
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(27,43,94,0.10);
+  padding: 28px 24px;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 18px;
+  background: var(--green);
+  border-radius: 2px;
+}
+
+/* ── FORM ── */
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 7px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+input[type="text"],
+input[type="tel"] {
+  width: 100%;
+  padding: 13px 14px;
+  border: 2px solid var(--cream-dark);
+  border-radius: 9px;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--cream);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+input[type="text"]:focus,
+input[type="tel"]:focus {
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(27,43,94,0.12);
+  background: var(--white);
+}
+
+input.error {
+  border-color: #c0392b;
+}
+
+.field-error {
+  color: #c0392b;
+  font-size: 0.78rem;
+  margin-top: 5px;
+  display: none;
+}
+
+/* ── BUTTON ── */
+.btn-submit {
+  width: 100%;
+  padding: 15px;
+  background: var(--green);
+  color: var(--white);
+  border: none;
+  border-radius: 9px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, transform 0.1s;
+  margin-top: 8px;
+}
+
+.btn-submit:hover {
+  background: var(--green-light);
+}
+
+.btn-submit:active {
+  transform: scale(0.98);
+}
+
+/* ── QR CODE PAGE ── */
+.qr-wrapper {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.qr-wrapper img {
+  max-width: 260px;
+  width: 100%;
+  border-radius: 10px;
+  border: 3px solid var(--cream-dark);
+}
+
+.qr-url {
+  margin-top: 14px;
+  font-size: 0.82rem;
+  color: var(--gray);
+  word-break: break-all;
+}
+
+.btn-secondary {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 10px 22px;
+  background: var(--navy);
+  color: var(--white);
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+  background: var(--navy-light);
+}
+
+/* ── SUCCESS PAGE ── */
+.success-icon {
+  text-align: center;
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+
+.success-title {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 10px;
+}
+
+.success-text {
+  text-align: center;
+  color: var(--gray);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.btn-back {
+  display: block;
+  text-align: center;
+  margin-top: 24px;
+  padding: 13px;
+  background: var(--navy);
+  color: var(--white);
+  border-radius: 9px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+
+.btn-back:hover {
+  background: var(--navy-light);
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  color: var(--gray);
+  font-size: 0.75rem;
+  padding: 20px 0 10px;
+}

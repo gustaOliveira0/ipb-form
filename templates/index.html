@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPB Guarapari — Painel</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>IPB Guarapari</h1>
+    <p>Sistema de Cadastro de Visitantes</p>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <div class="card-title">QR Code do Formulário</div>
+      <div class="qr-wrapper">
+        <img src="{{ url_for('static', filename='qr_code.png') }}?t={{ now }}" alt="QR Code">
+        <p class="qr-url">{{ form_url }}</p>
+        <a href="{{ url_for('download_qr') }}" class="btn-secondary">Baixar QR Code</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Acesso Direto</div>
+      <p style="font-size:0.88rem;color:#555;line-height:1.6;">
+        Escaneie o QR Code acima com o celular ou acesse diretamente:<br>
+        <a href="{{ form_url }}" style="color:#1B2B5E;font-weight:600;">{{ form_url }}</a>
+      </p>
+    </div>
+  </div>
+
+  <footer>IPB Guarapari &copy; {{ 2026 }}</footer>
+</body>
+</html>

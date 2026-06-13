@@ -1,3 +1,5 @@
+import base64
+import io
 import os
 import socket
 import smtplib
@@ -13,10 +15,6 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'ipb-form-secret-key')
-
-BASE_DIR = os.path.dirname(__file__)
-QR_FILE = os.path.join(BASE_DIR, 'static', 'qr_code.png')
-QR_EXPORT = os.path.join(BASE_DIR, 'qrcode_formulario.png')
 
 RECIPIENT_EMAIL = os.environ.get('RECIPIENT_EMAIL', 'ipbguarapari@gmail.com')
 EMAIL_SENDER = os.environ.get('EMAIL_SENDER', '')
@@ -36,21 +34,43 @@ def get_local_ip():
         return 'localhost'
 
 
-def generate_qr_code():
+def get_form_url():
     host_url = os.environ.get('HOST_URL', '').rstrip('/')
     if not host_url:
-        local_ip = get_local_ip()
-        host_url = f'http://{local_ip}:5001'
-    form_url = f'{host_url}/form'
+        # dentro de request context: usa o host real
+        try:
+            host_url = request.host_url.rstrip('/')
+        except RuntimeError:
+            local_ip = get_local_ip()
+            host_url = f'http://{local_ip}:5001'
+    return f'{host_url}/form'
+
+
+def build_qr_image(form_url):
     qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_H,
                         box_size=12, border=4)
     qr.add_data(form_url)
     qr.make(fit=True)
-    img = qr.make_image(fill_color='#1B2B5E', back_color='white')
-    os.makedirs(os.path.join(BASE_DIR, 'static'), exist_ok=True)
-    img.save(QR_FILE)
-    img.save(QR_EXPORT)
-    return form_url
+    return qr.make_image(fill_color='#1B2B5E', back_color='white')
+
+
+def generate_qr_b64():
+    """Gera o QR como base64 para embutir no HTML (sem gravar em disco)."""
+    form_url = get_form_url()
+    img = build_qr_image(form_url)
+    buf = io.BytesIO()
+    img.save(buf, format='PNG')
+    b64 = base64.b64encode(buf.getvalue()).decode()
+    return form_url, f'data:image/png;base64,{b64}'
+
+
+def generate_qr_file():
+    """Gera o QR em /tmp para download (único diretório gravável na Vercel)."""
+    form_url = get_form_url()
+    img = build_qr_image(form_url)
+    tmp_path = '/tmp/qrcode_ipb.png'
+    img.save(tmp_path)
+    return tmp_path
 
 
 def send_email(name, phone):
@@ -101,9 +121,8 @@ def send_email(name, phone):
 
 @app.route('/')
 def index():
-    form_url = generate_qr_code()
-    return render_template('index.html', form_url=form_url,
-                           now=int(datetime.now().timestamp()))
+    form_url, qr_b64 = generate_qr_b64()
+    return render_template('index.html', form_url=form_url, qr_b64=qr_b64)
 
 
 @app.route('/form')
@@ -128,8 +147,8 @@ def success():
 
 @app.route('/download-qr')
 def download_qr():
-    generate_qr_code()
-    return send_file(QR_EXPORT, as_attachment=True, download_name='qrcode_ipb.png')
+    tmp_path = generate_qr_file()
+    return send_file(tmp_path, as_attachment=True, download_name='qrcode_ipb.png')
 
 
 if __name__ == '__main__':
@@ -144,3 +163,4 @@ if __name__ == '__main__':
     print(f'{"="*50}\n')
     port = int(os.environ.get('PORT', 5001))
     app.run(debug=False, host='0.0.0.0', port=port)
+

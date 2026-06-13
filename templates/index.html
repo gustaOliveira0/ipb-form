@@ -16,7 +16,7 @@
     <div class="card">
       <div class="card-title">QR Code do Formulário</div>
       <div class="qr-wrapper">
-        <img src="{{ url_for('static', filename='qr_code.png') }}?t={{ now }}" alt="QR Code">
+        <img src="{{ qr_b64 }}" alt="QR Code">
         <p class="qr-url">{{ form_url }}</p>
         <a href="{{ url_for('download_qr') }}" class="btn-secondary">Baixar QR Code</a>
       </div>
